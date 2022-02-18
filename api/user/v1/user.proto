@@ -1,0 +1,319 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/qqz/Happy-Stream/api/user/v1;v1";
+
+service User{
+    rpc Login (LoginReq) returns (LoginReply) {
+        option (google.api.http) = {
+            post: "/v1/login"
+            body: "*"
+        };
+    }
+
+    rpc Register (RegisterReq) returns (RegisterReply) {
+        option (google.api.http) = {
+            post: "/v1/register"
+            body: "*"
+        };
+    }
+
+    rpc Logout (LogoutReq) returns (LogoutReply) {
+        option (google.api.http) = {
+            get: "/v1/logout"
+        };
+    }
+
+    /*==========================================================*/
+    rpc MemberAdd (MemberAddReq) returns (MemberAddReply) {
+        option (google.api.http) = {
+            post: "/v1/member/add"
+            body: "*"
+        };
+    }
+
+    rpc MemberRemove (MemberRemoveReq) returns (MemberRemoveReply) {
+        option (google.api.http) = {
+            delete: "/v1/member/remove/{id}"
+        };
+    }
+
+    rpc MemberChange (MemberChangeReq) returns (MemberChangeReply) {
+        option (google.api.http) = {
+            patch: "/v1/member/update"
+            body: "*"
+        };
+    }
+
+    rpc MemberGet (MemberGetReq) returns (MemberGetReply) {
+        option (google.api.http) = {
+            get: "/v1/member/get"
+        };
+    }
+
+    rpc MemberGetBetweenTime (MemberGetBetweenTimeReq) returns (MemberGetBetweenTimeReply) {
+        option (google.api.http) = {
+            get: "/v1/member/get/time/{start}/{end}"
+        };
+    }
+
+    /*==================================================*/
+    rpc RoleAdd (RoleAddReq) returns (RoleAddReply) {
+        option (google.api.http) = {
+            post: "/v1/role/add"
+            body: "*"
+        };
+    }
+
+    rpc RoleRemove (RoleRemoveReq) returns (RoleRemoveReply) {
+        option (google.api.http) = {
+            delete: "/v1/role/remove/{id}"
+        };
+    }
+
+    rpc RoleChange (RoleChangeReq) returns (RoleChangeReply) {
+        option (google.api.http) = {
+            patch: "/v1/role/update"
+            body: "*"
+        };
+    }
+
+    rpc RoleGet (RoleGetReq) returns (RoleGetReply) {
+        option (google.api.http) = {
+            get: "/v1/role/get"
+        };
+    }
+
+    /*================================================================*/
+    rpc PermissionAdd (PermissionAddReq) returns (PermissionAddReply) {
+        option (google.api.http) = {
+            post: "/v1/permission/add"
+            body: "*"
+        };
+    }
+
+    rpc PermissionRemove (PermissionRemoveReq) returns (PermissionRemoveReply) {
+        option (google.api.http) = {
+            delete: "/v1/permission/remove/{id}"
+        };
+    }
+
+    rpc PermissionChange (PermissionChangeReq) returns (PermissionChangeReply) {
+        option (google.api.http) = {
+            patch: "/v1/permission/update"
+            body: "*"
+        };
+    }
+
+    rpc PermissionGet (PermissionGetReq) returns (PermissionGetReply) {
+        option (google.api.http) = {
+            get: "/v1/permission/get"
+        };
+    }        
+}
+
+//用户基础业务逻辑
+message LoginReq {
+    string username = 1;
+    string password = 2;
+}
+
+message LoginReply {
+    string token = 1;
+    string username = 2;
+    string avator = 3;
+}
+
+message RegisterReq {
+    string username = 1;
+    string password = 2;
+    string phone = 3;
+}
+
+message RegisterReply {
+    string token = 1;
+    string username = 2;
+    string avator = 3;
+}
+
+message LogoutReq {
+    
+}
+
+message LogoutReply {
+    bool ok = 1;
+}
+
+message MemberEntity {
+    string username = 1;
+    string phone = 2;
+    string password = 3;
+    string email = 4;
+    string avator = 5;
+    float recharge = 6;
+    float balance = 7;
+    int64 rid =  8;
+}
+
+message MemberDTO {
+    int64 id = 1;
+    string username = 2;
+    string phone = 3;
+    string password = 4;
+    string email = 5;
+    string avator = 6;
+    float recharge = 7;
+    float balance = 8;
+    string role = 9;
+    repeated string permissions = 10;
+    string created_at = 11;
+    string updated_at = 12;
+    string deleted_at = 13;
+}
+
+message PageInfoReq {
+    int64 page_num = 1;
+    int64 page_size = 2;
+}
+
+message PageInfoReply {
+    int64 page_num = 1;
+    int64 page_size = 2;
+    int64 total = 3;
+}
+
+//member表增删改查
+message MemberAddReq {
+    MemberEntity member = 1;
+}
+
+message MemberAddReply {
+    int64 id = 1;
+}
+
+message MemberRemoveReq {
+    int64 id = 1;
+}
+
+message MemberRemoveReply {
+    bool ok = 1;
+}
+
+message MemberChangeReq {
+    MemberEntity member  = 1;
+}
+
+message MemberChangeReply {
+    bool ok = 1;
+}
+
+message MemberGetReq {
+    MemberDTO member = 1;
+    PageInfoReq page = 2;
+}
+
+message MemberGetReply{
+    repeated MemberDTO members = 1;
+    PageInfoReply page = 2;
+}
+
+message MemberGetBetweenTimeReq {
+    string start = 1;
+    string end = 2;
+    PageInfoReq  page = 3;
+}
+
+message MemberGetBetweenTimeReply {
+    repeated MemberDTO members = 1;
+    PageInfoReply page = 2;
+}
+
+
+//角色表增删改查
+message RoleDTO {
+    int64 id = 1;
+    string role_name = 2;
+    repeated string permissions =  3;
+}
+message RoleAddReq {
+    RoleDTO role = 1;
+}
+
+message RoleAddReply {
+    bool ok = 1;
+}
+
+message RoleRemoveReq {
+    int64 id = 1;
+}
+
+message RoleRemoveReply {
+    bool ok = 1;
+}
+
+message RoleChangeReq {
+    RoleDTO role = 1;
+}
+
+message RoleChangeReply {
+    bool ok = 1;
+}
+
+message RoleGetReq {
+    RoleDTO role = 1;
+    PageInfoReq page = 2;
+}
+
+message RoleGetReply {
+    repeated RoleDTO roles = 1;
+    PageInfoReply page = 2;
+}
+
+
+//权限表增删改查
+message PermissionDTO {
+    int64 id = 1;
+    string url = 2;
+    PermissionDTO permissiondto = 3;
+}
+
+message PermissionEntity {
+    string url = 1;
+    int64 parent_id = 2;
+}
+
+message PermissionAddReq {
+    string url = 1;
+    int64 parent_id = 2;
+}
+
+message PermissionAddReply {
+    bool ok = 1;
+}
+
+message PermissionRemoveReq {
+    int64 id = 1;
+}
+
+message PermissionRemoveReply {
+    bool ok = 1;
+}
+
+message PermissionChangeReq {
+    PermissionEntity permission = 1;
+}
+
+message PermissionChangeReply {
+    bool ok = 1;
+}
+
+message PermissionGetReq {
+    PermissionEntity permission = 1;
+}
+
+message PermissionGetReply {
+    repeated PermissionDTO permission = 1;
+}

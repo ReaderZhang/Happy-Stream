@@ -3,17 +3,19 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter
-    description: The greeting service definition.
+    title: ""
     version: 0.0.1
 paths:
     /helloworld/{name}:
         get:
-            summary: Sends a greeting
+            tags:
+                - Greeter
+            description: Sends a greeting
             operationId: Greeter_SayHello
             parameters:
                 - name: name
-                  in: query
+                  in: path
+                  required: true
                   schema:
                     type: string
             responses:
@@ -23,10 +25,658 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HelloReply'
+    /v1/login:
+        post:
+            tags:
+                - User
+            operationId: User_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoginReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoginReply'
+    /v1/logout:
+        get:
+            tags:
+                - User
+            operationId: User_Logout
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LogoutReply'
+    /v1/member/add:
+        post:
+            tags:
+                - User
+            description: ==========================================================
+            operationId: User_MemberAdd
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MemberAddReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberAddReply'
+    /v1/member/get:
+        get:
+            tags:
+                - User
+            operationId: User_MemberGet
+            parameters:
+                - name: member.id
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: member.username
+                  in: query
+                  schema:
+                    type: string
+                - name: member.phone
+                  in: query
+                  schema:
+                    type: string
+                - name: member.password
+                  in: query
+                  schema:
+                    type: string
+                - name: member.email
+                  in: query
+                  schema:
+                    type: string
+                - name: member.avator
+                  in: query
+                  schema:
+                    type: string
+                - name: member.recharge
+                  in: query
+                  schema:
+                    type: number
+                    format: float
+                - name: member.balance
+                  in: query
+                  schema:
+                    type: number
+                    format: float
+                - name: member.role
+                  in: query
+                  schema:
+                    type: string
+                - name: member.permissions
+                  in: query
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: member.createdAt
+                  in: query
+                  schema:
+                    type: string
+                - name: member.updatedAt
+                  in: query
+                  schema:
+                    type: string
+                - name: member.deletedAt
+                  in: query
+                  schema:
+                    type: string
+                - name: page.pageNum
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: page.pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberGetReply'
+    /v1/member/get/time/{start}/{end}:
+        get:
+            tags:
+                - User
+            operationId: User_MemberGetBetweenTime
+            parameters:
+                - name: start
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: end
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: page.pageNum
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: page.pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberGetBetweenTimeReply'
+    /v1/member/remove/{id}:
+        delete:
+            tags:
+                - User
+            operationId: User_MemberRemove
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberRemoveReply'
+    /v1/member/update:
+        patch:
+            tags:
+                - User
+            operationId: User_MemberChange
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MemberChangeReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberChangeReply'
+    /v1/permission/add:
+        post:
+            tags:
+                - User
+            description: ================================================================
+            operationId: User_PermissionAdd
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PermissionAddReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PermissionAddReply'
+    /v1/permission/get:
+        get:
+            tags:
+                - User
+            operationId: User_PermissionGet
+            parameters:
+                - name: permission.url
+                  in: query
+                  schema:
+                    type: string
+                - name: permission.parentId
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PermissionGetReply'
+    /v1/permission/remove/{id}:
+        delete:
+            tags:
+                - User
+            operationId: User_PermissionRemove
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PermissionRemoveReply'
+    /v1/permission/update:
+        patch:
+            tags:
+                - User
+            operationId: User_PermissionChange
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PermissionChangeReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PermissionChangeReply'
+    /v1/register:
+        post:
+            tags:
+                - User
+            operationId: User_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RegisterReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RegisterReply'
+    /v1/role/add:
+        post:
+            tags:
+                - User
+            description: ==================================================
+            operationId: User_RoleAdd
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RoleAddReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RoleAddReply'
+    /v1/role/get:
+        get:
+            tags:
+                - User
+            operationId: User_RoleGet
+            parameters:
+                - name: role.id
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: role.roleName
+                  in: query
+                  schema:
+                    type: string
+                - name: role.permissions
+                  in: query
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: page.pageNum
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+                - name: page.pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RoleGetReply'
+    /v1/role/remove/{id}:
+        delete:
+            tags:
+                - User
+            operationId: User_RoleRemove
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RoleRemoveReply'
+    /v1/role/update:
+        patch:
+            tags:
+                - User
+            operationId: User_RoleChange
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RoleChangeReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RoleChangeReply'
 components:
     schemas:
         HelloReply:
+            type: object
             properties:
                 message:
                     type: string
             description: The response message containing the greetings
+        LoginReply:
+            type: object
+            properties:
+                token:
+                    type: string
+                username:
+                    type: string
+                avator:
+                    type: string
+        LoginReq:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+            description: 用户基础业务逻辑
+        LogoutReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+        MemberAddReply:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+        MemberAddReq:
+            type: object
+            properties:
+                member:
+                    $ref: '#/components/schemas/MemberEntity'
+            description: member表增删改查
+        MemberChangeReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+        MemberChangeReq:
+            type: object
+            properties:
+                member:
+                    $ref: '#/components/schemas/MemberEntity'
+        MemberDTO:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                username:
+                    type: string
+                phone:
+                    type: string
+                password:
+                    type: string
+                email:
+                    type: string
+                avator:
+                    type: string
+                recharge:
+                    type: number
+                    format: float
+                balance:
+                    type: number
+                    format: float
+                role:
+                    type: string
+                permissions:
+                    type: array
+                    items:
+                        type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+                deletedAt:
+                    type: string
+        MemberEntity:
+            type: object
+            properties:
+                username:
+                    type: string
+                phone:
+                    type: string
+                password:
+                    type: string
+                email:
+                    type: string
+                avator:
+                    type: string
+                recharge:
+                    type: number
+                    format: float
+                balance:
+                    type: number
+                    format: float
+                rid:
+                    type: integer
+                    format: int64
+        MemberGetBetweenTimeReply:
+            type: object
+            properties:
+                members:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MemberDTO'
+                page:
+                    $ref: '#/components/schemas/PageInfoReply'
+        MemberGetReply:
+            type: object
+            properties:
+                members:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MemberDTO'
+                page:
+                    $ref: '#/components/schemas/PageInfoReply'
+        MemberRemoveReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+        PageInfoReply:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int64
+                pageSize:
+                    type: integer
+                    format: int64
+                total:
+                    type: integer
+                    format: int64
+        PermissionAddReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+        PermissionAddReq:
+            type: object
+            properties:
+                url:
+                    type: string
+                parentId:
+                    type: integer
+                    format: int64
+        PermissionChangeReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+        PermissionChangeReq:
+            type: object
+            properties:
+                permission:
+                    $ref: '#/components/schemas/PermissionEntity'
+        PermissionDTO:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                url:
+                    type: string
+                permissiondto:
+                    $ref: '#/components/schemas/PermissionDTO'
+            description: 权限表增删改查
+        PermissionEntity:
+            type: object
+            properties:
+                url:
+                    type: string
+                parentId:
+                    type: integer
+                    format: int64
+        PermissionGetReply:
+            type: object
+            properties:
+                permission:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PermissionDTO'
+        PermissionRemoveReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+        RegisterReply:
+            type: object
+            properties:
+                token:
+                    type: string
+                username:
+                    type: string
+                avator:
+                    type: string
+        RegisterReq:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+                phone:
+                    type: string
+        RoleAddReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+        RoleAddReq:
+            type: object
+            properties:
+                role:
+                    $ref: '#/components/schemas/RoleDTO'
+        RoleChangeReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+        RoleChangeReq:
+            type: object
+            properties:
+                role:
+                    $ref: '#/components/schemas/RoleDTO'
+        RoleDTO:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                roleName:
+                    type: string
+                permissions:
+                    type: array
+                    items:
+                        type: string
+            description: 角色表增删改查
+        RoleGetReply:
+            type: object
+            properties:
+                roles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/RoleDTO'
+                page:
+                    $ref: '#/components/schemas/PageInfoReply'
+        RoleRemoveReply:
+            type: object
+            properties:
+                ok:
+                    type: boolean
+tags:
+    - name: Greeter
+      description: The greeting service definition.
+    - name: User
