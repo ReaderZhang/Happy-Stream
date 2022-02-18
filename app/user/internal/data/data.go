@@ -1,9 +1,9 @@
 package data
 
 import (
-	"github.com/qqz/Happy-Stream/internal/conf"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	"github.com/qqz/Happy-Stream/app/user/internal/conf"
 )
 
 // ProviderSet is data providers.

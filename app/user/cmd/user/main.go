@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	"github.com/qqz/Happy-Stream/internal/conf"
+	"user/internal/conf"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"

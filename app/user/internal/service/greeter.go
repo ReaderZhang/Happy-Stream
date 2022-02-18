@@ -3,9 +3,10 @@ package service
 import (
 	"context"
 
-	v1 "github.com/qqz/Happy-Stream/api/helloworld/v1"
-	"github.com/qqz/Happy-Stream/internal/biz"
+	"github.com/qqz/Happy-Stream/app/user/internal/biz"
+
 	"github.com/go-kratos/kratos/v2/log"
+	v1 "github.com/qqz/Happy-Stream/api/helloworld/v1"
 )
 
 // GreeterService is a greeter service.

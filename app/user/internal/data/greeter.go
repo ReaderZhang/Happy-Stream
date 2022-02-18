@@ -2,8 +2,9 @@ package data
 
 import (
 	"context"
-	"github.com/qqz/Happy-Stream/internal/biz"
+
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/qqz/Happy-Stream/app/user/internal/biz"
 )
 
 type greeterRepo struct {

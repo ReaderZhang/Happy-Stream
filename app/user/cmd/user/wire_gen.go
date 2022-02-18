@@ -6,11 +6,11 @@
 package main
 
 import (
-	"github.com/qqz/Happy-Stream/internal/biz"
-	"github.com/qqz/Happy-Stream/internal/conf"
-	"github.com/qqz/Happy-Stream/internal/data"
-	"github.com/qqz/Happy-Stream/internal/server"
-	"github.com/qqz/Happy-Stream/internal/service"
+	"user/internal/biz"
+	"user/internal/conf"
+	"user/internal/data"
+	"user/internal/server"
+	"user/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 )

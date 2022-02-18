@@ -18,21 +18,29 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type UserHTTPServer interface {
+	ListMemberGetBetweenBalance(context.Context, *ListMemberGetBetweenBalanceReq) (*ListMemberGetBetweenBalanceReply, error)
+	ListMemberGetBetweenRecharge(context.Context, *ListMemberGetBetweenRechargeReq) (*ListMemberGetBetweenRechargeReply, error)
+	ListMemberGetBetweenTime(context.Context, *ListMemberGetBetweenTimeReq) (*ListMemberGetBetweenTimeReply, error)
+	ListMemberGetByEmail(context.Context, *ListMemberGetByEmailReq) (*ListMemberGetByEmailReply, error)
+	ListMemberGetById(context.Context, *ListMemberGetByIdReq) (*ListMemberGetByIdReply, error)
+	ListMemberGetByName(context.Context, *ListMemberGetByNameReq) (*ListMemberGetByNameReply, error)
+	ListMemberGetByPhone(context.Context, *ListMemberGetByPhoneReq) (*ListMemberGetByPhoneReply, error)
 	Login(context.Context, *LoginReq) (*LoginReply, error)
 	Logout(context.Context, *LogoutReq) (*LogoutReply, error)
 	MemberAdd(context.Context, *MemberAddReq) (*MemberAddReply, error)
 	MemberChange(context.Context, *MemberChangeReq) (*MemberChangeReply, error)
 	MemberGet(context.Context, *MemberGetReq) (*MemberGetReply, error)
-	MemberGetBetweenTime(context.Context, *MemberGetBetweenTimeReq) (*MemberGetBetweenTimeReply, error)
 	MemberRemove(context.Context, *MemberRemoveReq) (*MemberRemoveReply, error)
 	PermissionAdd(context.Context, *PermissionAddReq) (*PermissionAddReply, error)
 	PermissionChange(context.Context, *PermissionChangeReq) (*PermissionChangeReply, error)
 	PermissionGet(context.Context, *PermissionGetReq) (*PermissionGetReply, error)
+	PermissionGetAll(context.Context, *PermissionGetAllReq) (*PermissionGetAllReply, error)
 	PermissionRemove(context.Context, *PermissionRemoveReq) (*PermissionRemoveReply, error)
 	Register(context.Context, *RegisterReq) (*RegisterReply, error)
 	RoleAdd(context.Context, *RoleAddReq) (*RoleAddReply, error)
 	RoleChange(context.Context, *RoleChangeReq) (*RoleChangeReply, error)
 	RoleGet(context.Context, *RoleGetReq) (*RoleGetReply, error)
+	RoleGetAll(context.Context, *RoleGetAllReq) (*RoleGetAllReply, error)
 	RoleRemove(context.Context, *RoleRemoveReq) (*RoleRemoveReply, error)
 }
 
@@ -44,16 +52,24 @@ func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r.POST("/v1/member/add", _User_MemberAdd0_HTTP_Handler(srv))
 	r.DELETE("/v1/member/remove/{id}", _User_MemberRemove0_HTTP_Handler(srv))
 	r.PATCH("/v1/member/update", _User_MemberChange0_HTTP_Handler(srv))
-	r.GET("/v1/member/get", _User_MemberGet0_HTTP_Handler(srv))
-	r.GET("/v1/member/get/time/{start}/{end}", _User_MemberGetBetweenTime0_HTTP_Handler(srv))
+	r.GET("/v1/member/get/{id}", _User_MemberGet0_HTTP_Handler(srv))
+	r.GET("/v1/member/list/get/{id}", _User_ListMemberGetById0_HTTP_Handler(srv))
+	r.GET("/v1/member/list/get/name/{name}", _User_ListMemberGetByName0_HTTP_Handler(srv))
+	r.GET("/v1/member/list/get/phone/{phone}", _User_ListMemberGetByPhone0_HTTP_Handler(srv))
+	r.GET("/v1/member/list/get/email/{email}", _User_ListMemberGetByEmail0_HTTP_Handler(srv))
+	r.GET("/v1/member/list/get/recharge/{low}/{high}", _User_ListMemberGetBetweenRecharge0_HTTP_Handler(srv))
+	r.GET("/v1/member/list/get/balance/{low}/{high}", _User_ListMemberGetBetweenBalance0_HTTP_Handler(srv))
+	r.GET("/v1/member/list/get/time/{start}/{end}", _User_ListMemberGetBetweenTime0_HTTP_Handler(srv))
 	r.POST("/v1/role/add", _User_RoleAdd0_HTTP_Handler(srv))
 	r.DELETE("/v1/role/remove/{id}", _User_RoleRemove0_HTTP_Handler(srv))
 	r.PATCH("/v1/role/update", _User_RoleChange0_HTTP_Handler(srv))
-	r.GET("/v1/role/get", _User_RoleGet0_HTTP_Handler(srv))
+	r.GET("/v1/role/get/{id}", _User_RoleGet0_HTTP_Handler(srv))
+	r.GET("/v1/role/get/all", _User_RoleGetAll0_HTTP_Handler(srv))
 	r.POST("/v1/permission/add", _User_PermissionAdd0_HTTP_Handler(srv))
 	r.DELETE("/v1/permission/remove/{id}", _User_PermissionRemove0_HTTP_Handler(srv))
 	r.PATCH("/v1/permission/update", _User_PermissionChange0_HTTP_Handler(srv))
-	r.GET("/v1/permission/get", _User_PermissionGet0_HTTP_Handler(srv))
+	r.GET("/v1/permission/get/{id}", _User_PermissionGet0_HTTP_Handler(srv))
+	r.GET("/v1/permission/get/all", _User_PermissionGetAll0_HTTP_Handler(srv))
 }
 
 func _User_Login0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
@@ -179,6 +195,9 @@ func _User_MemberGet0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) er
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
 		http.SetOperation(ctx, "/user.v1.User/MemberGet")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.MemberGet(ctx, req.(*MemberGetReq))
@@ -192,24 +211,156 @@ func _User_MemberGet0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) er
 	}
 }
 
-func _User_MemberGetBetweenTime0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+func _User_ListMemberGetById0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in MemberGetBetweenTimeReq
+		var in ListMemberGetByIdReq
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/user.v1.User/MemberGetBetweenTime")
+		http.SetOperation(ctx, "/user.v1.User/ListMemberGetById")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.MemberGetBetweenTime(ctx, req.(*MemberGetBetweenTimeReq))
+			return srv.ListMemberGetById(ctx, req.(*ListMemberGetByIdReq))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*MemberGetBetweenTimeReply)
+		reply := out.(*ListMemberGetByIdReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_ListMemberGetByName0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ListMemberGetByNameReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.User/ListMemberGetByName")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListMemberGetByName(ctx, req.(*ListMemberGetByNameReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListMemberGetByNameReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_ListMemberGetByPhone0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ListMemberGetByPhoneReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.User/ListMemberGetByPhone")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListMemberGetByPhone(ctx, req.(*ListMemberGetByPhoneReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListMemberGetByPhoneReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_ListMemberGetByEmail0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ListMemberGetByEmailReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.User/ListMemberGetByEmail")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListMemberGetByEmail(ctx, req.(*ListMemberGetByEmailReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListMemberGetByEmailReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_ListMemberGetBetweenRecharge0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ListMemberGetBetweenRechargeReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.User/ListMemberGetBetweenRecharge")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListMemberGetBetweenRecharge(ctx, req.(*ListMemberGetBetweenRechargeReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListMemberGetBetweenRechargeReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_ListMemberGetBetweenBalance0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ListMemberGetBetweenBalanceReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.User/ListMemberGetBetweenBalance")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListMemberGetBetweenBalance(ctx, req.(*ListMemberGetBetweenBalanceReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListMemberGetBetweenBalanceReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_ListMemberGetBetweenTime0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ListMemberGetBetweenTimeReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.User/ListMemberGetBetweenTime")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListMemberGetBetweenTime(ctx, req.(*ListMemberGetBetweenTimeReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListMemberGetBetweenTimeReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -280,6 +431,9 @@ func _User_RoleGet0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) erro
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
 		http.SetOperation(ctx, "/user.v1.User/RoleGet")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.RoleGet(ctx, req.(*RoleGetReq))
@@ -289,6 +443,25 @@ func _User_RoleGet0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) erro
 			return err
 		}
 		reply := out.(*RoleGetReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_RoleGetAll0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in RoleGetAllReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.User/RoleGetAll")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.RoleGetAll(ctx, req.(*RoleGetAllReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*RoleGetAllReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -359,6 +532,9 @@ func _User_PermissionGet0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
 		http.SetOperation(ctx, "/user.v1.User/PermissionGet")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.PermissionGet(ctx, req.(*PermissionGetReq))
@@ -372,22 +548,49 @@ func _User_PermissionGet0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context
 	}
 }
 
+func _User_PermissionGetAll0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in PermissionGetAllReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.User/PermissionGetAll")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.PermissionGetAll(ctx, req.(*PermissionGetAllReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*PermissionGetAllReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type UserHTTPClient interface {
+	ListMemberGetBetweenBalance(ctx context.Context, req *ListMemberGetBetweenBalanceReq, opts ...http.CallOption) (rsp *ListMemberGetBetweenBalanceReply, err error)
+	ListMemberGetBetweenRecharge(ctx context.Context, req *ListMemberGetBetweenRechargeReq, opts ...http.CallOption) (rsp *ListMemberGetBetweenRechargeReply, err error)
+	ListMemberGetBetweenTime(ctx context.Context, req *ListMemberGetBetweenTimeReq, opts ...http.CallOption) (rsp *ListMemberGetBetweenTimeReply, err error)
+	ListMemberGetByEmail(ctx context.Context, req *ListMemberGetByEmailReq, opts ...http.CallOption) (rsp *ListMemberGetByEmailReply, err error)
+	ListMemberGetById(ctx context.Context, req *ListMemberGetByIdReq, opts ...http.CallOption) (rsp *ListMemberGetByIdReply, err error)
+	ListMemberGetByName(ctx context.Context, req *ListMemberGetByNameReq, opts ...http.CallOption) (rsp *ListMemberGetByNameReply, err error)
+	ListMemberGetByPhone(ctx context.Context, req *ListMemberGetByPhoneReq, opts ...http.CallOption) (rsp *ListMemberGetByPhoneReply, err error)
 	Login(ctx context.Context, req *LoginReq, opts ...http.CallOption) (rsp *LoginReply, err error)
 	Logout(ctx context.Context, req *LogoutReq, opts ...http.CallOption) (rsp *LogoutReply, err error)
 	MemberAdd(ctx context.Context, req *MemberAddReq, opts ...http.CallOption) (rsp *MemberAddReply, err error)
 	MemberChange(ctx context.Context, req *MemberChangeReq, opts ...http.CallOption) (rsp *MemberChangeReply, err error)
 	MemberGet(ctx context.Context, req *MemberGetReq, opts ...http.CallOption) (rsp *MemberGetReply, err error)
-	MemberGetBetweenTime(ctx context.Context, req *MemberGetBetweenTimeReq, opts ...http.CallOption) (rsp *MemberGetBetweenTimeReply, err error)
 	MemberRemove(ctx context.Context, req *MemberRemoveReq, opts ...http.CallOption) (rsp *MemberRemoveReply, err error)
 	PermissionAdd(ctx context.Context, req *PermissionAddReq, opts ...http.CallOption) (rsp *PermissionAddReply, err error)
 	PermissionChange(ctx context.Context, req *PermissionChangeReq, opts ...http.CallOption) (rsp *PermissionChangeReply, err error)
 	PermissionGet(ctx context.Context, req *PermissionGetReq, opts ...http.CallOption) (rsp *PermissionGetReply, err error)
+	PermissionGetAll(ctx context.Context, req *PermissionGetAllReq, opts ...http.CallOption) (rsp *PermissionGetAllReply, err error)
 	PermissionRemove(ctx context.Context, req *PermissionRemoveReq, opts ...http.CallOption) (rsp *PermissionRemoveReply, err error)
 	Register(ctx context.Context, req *RegisterReq, opts ...http.CallOption) (rsp *RegisterReply, err error)
 	RoleAdd(ctx context.Context, req *RoleAddReq, opts ...http.CallOption) (rsp *RoleAddReply, err error)
 	RoleChange(ctx context.Context, req *RoleChangeReq, opts ...http.CallOption) (rsp *RoleChangeReply, err error)
 	RoleGet(ctx context.Context, req *RoleGetReq, opts ...http.CallOption) (rsp *RoleGetReply, err error)
+	RoleGetAll(ctx context.Context, req *RoleGetAllReq, opts ...http.CallOption) (rsp *RoleGetAllReply, err error)
 	RoleRemove(ctx context.Context, req *RoleRemoveReq, opts ...http.CallOption) (rsp *RoleRemoveReply, err error)
 }
 
@@ -397,6 +600,97 @@ type UserHTTPClientImpl struct {
 
 func NewUserHTTPClient(client *http.Client) UserHTTPClient {
 	return &UserHTTPClientImpl{client}
+}
+
+func (c *UserHTTPClientImpl) ListMemberGetBetweenBalance(ctx context.Context, in *ListMemberGetBetweenBalanceReq, opts ...http.CallOption) (*ListMemberGetBetweenBalanceReply, error) {
+	var out ListMemberGetBetweenBalanceReply
+	pattern := "/v1/member/list/get/balance/{low}/{high}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/ListMemberGetBetweenBalance"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) ListMemberGetBetweenRecharge(ctx context.Context, in *ListMemberGetBetweenRechargeReq, opts ...http.CallOption) (*ListMemberGetBetweenRechargeReply, error) {
+	var out ListMemberGetBetweenRechargeReply
+	pattern := "/v1/member/list/get/recharge/{low}/{high}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/ListMemberGetBetweenRecharge"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) ListMemberGetBetweenTime(ctx context.Context, in *ListMemberGetBetweenTimeReq, opts ...http.CallOption) (*ListMemberGetBetweenTimeReply, error) {
+	var out ListMemberGetBetweenTimeReply
+	pattern := "/v1/member/list/get/time/{start}/{end}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/ListMemberGetBetweenTime"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) ListMemberGetByEmail(ctx context.Context, in *ListMemberGetByEmailReq, opts ...http.CallOption) (*ListMemberGetByEmailReply, error) {
+	var out ListMemberGetByEmailReply
+	pattern := "/v1/member/list/get/email/{email}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/ListMemberGetByEmail"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) ListMemberGetById(ctx context.Context, in *ListMemberGetByIdReq, opts ...http.CallOption) (*ListMemberGetByIdReply, error) {
+	var out ListMemberGetByIdReply
+	pattern := "/v1/member/list/get/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/ListMemberGetById"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) ListMemberGetByName(ctx context.Context, in *ListMemberGetByNameReq, opts ...http.CallOption) (*ListMemberGetByNameReply, error) {
+	var out ListMemberGetByNameReply
+	pattern := "/v1/member/list/get/name/{name}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/ListMemberGetByName"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) ListMemberGetByPhone(ctx context.Context, in *ListMemberGetByPhoneReq, opts ...http.CallOption) (*ListMemberGetByPhoneReply, error) {
+	var out ListMemberGetByPhoneReply
+	pattern := "/v1/member/list/get/phone/{phone}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/ListMemberGetByPhone"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
 }
 
 func (c *UserHTTPClientImpl) Login(ctx context.Context, in *LoginReq, opts ...http.CallOption) (*LoginReply, error) {
@@ -453,22 +747,9 @@ func (c *UserHTTPClientImpl) MemberChange(ctx context.Context, in *MemberChangeR
 
 func (c *UserHTTPClientImpl) MemberGet(ctx context.Context, in *MemberGetReq, opts ...http.CallOption) (*MemberGetReply, error) {
 	var out MemberGetReply
-	pattern := "/v1/member/get"
+	pattern := "/v1/member/get/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/user.v1.User/MemberGet"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *UserHTTPClientImpl) MemberGetBetweenTime(ctx context.Context, in *MemberGetBetweenTimeReq, opts ...http.CallOption) (*MemberGetBetweenTimeReply, error) {
-	var out MemberGetBetweenTimeReply
-	pattern := "/v1/member/get/time/{start}/{end}"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation("/user.v1.User/MemberGetBetweenTime"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -518,9 +799,22 @@ func (c *UserHTTPClientImpl) PermissionChange(ctx context.Context, in *Permissio
 
 func (c *UserHTTPClientImpl) PermissionGet(ctx context.Context, in *PermissionGetReq, opts ...http.CallOption) (*PermissionGetReply, error) {
 	var out PermissionGetReply
-	pattern := "/v1/permission/get"
+	pattern := "/v1/permission/get/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/user.v1.User/PermissionGet"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) PermissionGetAll(ctx context.Context, in *PermissionGetAllReq, opts ...http.CallOption) (*PermissionGetAllReply, error) {
+	var out PermissionGetAllReply
+	pattern := "/v1/permission/get/all"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/PermissionGetAll"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -583,9 +877,22 @@ func (c *UserHTTPClientImpl) RoleChange(ctx context.Context, in *RoleChangeReq, 
 
 func (c *UserHTTPClientImpl) RoleGet(ctx context.Context, in *RoleGetReq, opts ...http.CallOption) (*RoleGetReply, error) {
 	var out RoleGetReply
-	pattern := "/v1/role/get"
+	pattern := "/v1/role/get/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/user.v1.User/RoleGet"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) RoleGetAll(ctx context.Context, in *RoleGetAllReq, opts ...http.CallOption) (*RoleGetAllReply, error) {
+	var out RoleGetAllReply
+	pattern := "/v1/role/get/all"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.User/RoleGetAll"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

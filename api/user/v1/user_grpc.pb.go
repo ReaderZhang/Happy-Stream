@@ -30,17 +30,25 @@ type UserClient interface {
 	MemberRemove(ctx context.Context, in *MemberRemoveReq, opts ...grpc.CallOption) (*MemberRemoveReply, error)
 	MemberChange(ctx context.Context, in *MemberChangeReq, opts ...grpc.CallOption) (*MemberChangeReply, error)
 	MemberGet(ctx context.Context, in *MemberGetReq, opts ...grpc.CallOption) (*MemberGetReply, error)
-	MemberGetBetweenTime(ctx context.Context, in *MemberGetBetweenTimeReq, opts ...grpc.CallOption) (*MemberGetBetweenTimeReply, error)
+	ListMemberGetById(ctx context.Context, in *ListMemberGetByIdReq, opts ...grpc.CallOption) (*ListMemberGetByIdReply, error)
+	ListMemberGetByName(ctx context.Context, in *ListMemberGetByNameReq, opts ...grpc.CallOption) (*ListMemberGetByNameReply, error)
+	ListMemberGetByPhone(ctx context.Context, in *ListMemberGetByPhoneReq, opts ...grpc.CallOption) (*ListMemberGetByPhoneReply, error)
+	ListMemberGetByEmail(ctx context.Context, in *ListMemberGetByEmailReq, opts ...grpc.CallOption) (*ListMemberGetByEmailReply, error)
+	ListMemberGetBetweenRecharge(ctx context.Context, in *ListMemberGetBetweenRechargeReq, opts ...grpc.CallOption) (*ListMemberGetBetweenRechargeReply, error)
+	ListMemberGetBetweenBalance(ctx context.Context, in *ListMemberGetBetweenBalanceReq, opts ...grpc.CallOption) (*ListMemberGetBetweenBalanceReply, error)
+	ListMemberGetBetweenTime(ctx context.Context, in *ListMemberGetBetweenTimeReq, opts ...grpc.CallOption) (*ListMemberGetBetweenTimeReply, error)
 	//==================================================
 	RoleAdd(ctx context.Context, in *RoleAddReq, opts ...grpc.CallOption) (*RoleAddReply, error)
 	RoleRemove(ctx context.Context, in *RoleRemoveReq, opts ...grpc.CallOption) (*RoleRemoveReply, error)
 	RoleChange(ctx context.Context, in *RoleChangeReq, opts ...grpc.CallOption) (*RoleChangeReply, error)
 	RoleGet(ctx context.Context, in *RoleGetReq, opts ...grpc.CallOption) (*RoleGetReply, error)
+	RoleGetAll(ctx context.Context, in *RoleGetAllReq, opts ...grpc.CallOption) (*RoleGetAllReply, error)
 	//================================================================
 	PermissionAdd(ctx context.Context, in *PermissionAddReq, opts ...grpc.CallOption) (*PermissionAddReply, error)
 	PermissionRemove(ctx context.Context, in *PermissionRemoveReq, opts ...grpc.CallOption) (*PermissionRemoveReply, error)
 	PermissionChange(ctx context.Context, in *PermissionChangeReq, opts ...grpc.CallOption) (*PermissionChangeReply, error)
 	PermissionGet(ctx context.Context, in *PermissionGetReq, opts ...grpc.CallOption) (*PermissionGetReply, error)
+	PermissionGetAll(ctx context.Context, in *PermissionGetAllReq, opts ...grpc.CallOption) (*PermissionGetAllReply, error)
 }
 
 type userClient struct {
@@ -114,9 +122,63 @@ func (c *userClient) MemberGet(ctx context.Context, in *MemberGetReq, opts ...gr
 	return out, nil
 }
 
-func (c *userClient) MemberGetBetweenTime(ctx context.Context, in *MemberGetBetweenTimeReq, opts ...grpc.CallOption) (*MemberGetBetweenTimeReply, error) {
-	out := new(MemberGetBetweenTimeReply)
-	err := c.cc.Invoke(ctx, "/user.v1.User/MemberGetBetweenTime", in, out, opts...)
+func (c *userClient) ListMemberGetById(ctx context.Context, in *ListMemberGetByIdReq, opts ...grpc.CallOption) (*ListMemberGetByIdReply, error) {
+	out := new(ListMemberGetByIdReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/ListMemberGetById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) ListMemberGetByName(ctx context.Context, in *ListMemberGetByNameReq, opts ...grpc.CallOption) (*ListMemberGetByNameReply, error) {
+	out := new(ListMemberGetByNameReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/ListMemberGetByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) ListMemberGetByPhone(ctx context.Context, in *ListMemberGetByPhoneReq, opts ...grpc.CallOption) (*ListMemberGetByPhoneReply, error) {
+	out := new(ListMemberGetByPhoneReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/ListMemberGetByPhone", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) ListMemberGetByEmail(ctx context.Context, in *ListMemberGetByEmailReq, opts ...grpc.CallOption) (*ListMemberGetByEmailReply, error) {
+	out := new(ListMemberGetByEmailReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/ListMemberGetByEmail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) ListMemberGetBetweenRecharge(ctx context.Context, in *ListMemberGetBetweenRechargeReq, opts ...grpc.CallOption) (*ListMemberGetBetweenRechargeReply, error) {
+	out := new(ListMemberGetBetweenRechargeReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/ListMemberGetBetweenRecharge", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) ListMemberGetBetweenBalance(ctx context.Context, in *ListMemberGetBetweenBalanceReq, opts ...grpc.CallOption) (*ListMemberGetBetweenBalanceReply, error) {
+	out := new(ListMemberGetBetweenBalanceReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/ListMemberGetBetweenBalance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) ListMemberGetBetweenTime(ctx context.Context, in *ListMemberGetBetweenTimeReq, opts ...grpc.CallOption) (*ListMemberGetBetweenTimeReply, error) {
+	out := new(ListMemberGetBetweenTimeReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/ListMemberGetBetweenTime", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -159,6 +221,15 @@ func (c *userClient) RoleGet(ctx context.Context, in *RoleGetReq, opts ...grpc.C
 	return out, nil
 }
 
+func (c *userClient) RoleGetAll(ctx context.Context, in *RoleGetAllReq, opts ...grpc.CallOption) (*RoleGetAllReply, error) {
+	out := new(RoleGetAllReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/RoleGetAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) PermissionAdd(ctx context.Context, in *PermissionAddReq, opts ...grpc.CallOption) (*PermissionAddReply, error) {
 	out := new(PermissionAddReply)
 	err := c.cc.Invoke(ctx, "/user.v1.User/PermissionAdd", in, out, opts...)
@@ -195,6 +266,15 @@ func (c *userClient) PermissionGet(ctx context.Context, in *PermissionGetReq, op
 	return out, nil
 }
 
+func (c *userClient) PermissionGetAll(ctx context.Context, in *PermissionGetAllReq, opts ...grpc.CallOption) (*PermissionGetAllReply, error) {
+	out := new(PermissionGetAllReply)
+	err := c.cc.Invoke(ctx, "/user.v1.User/PermissionGetAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -207,17 +287,25 @@ type UserServer interface {
 	MemberRemove(context.Context, *MemberRemoveReq) (*MemberRemoveReply, error)
 	MemberChange(context.Context, *MemberChangeReq) (*MemberChangeReply, error)
 	MemberGet(context.Context, *MemberGetReq) (*MemberGetReply, error)
-	MemberGetBetweenTime(context.Context, *MemberGetBetweenTimeReq) (*MemberGetBetweenTimeReply, error)
+	ListMemberGetById(context.Context, *ListMemberGetByIdReq) (*ListMemberGetByIdReply, error)
+	ListMemberGetByName(context.Context, *ListMemberGetByNameReq) (*ListMemberGetByNameReply, error)
+	ListMemberGetByPhone(context.Context, *ListMemberGetByPhoneReq) (*ListMemberGetByPhoneReply, error)
+	ListMemberGetByEmail(context.Context, *ListMemberGetByEmailReq) (*ListMemberGetByEmailReply, error)
+	ListMemberGetBetweenRecharge(context.Context, *ListMemberGetBetweenRechargeReq) (*ListMemberGetBetweenRechargeReply, error)
+	ListMemberGetBetweenBalance(context.Context, *ListMemberGetBetweenBalanceReq) (*ListMemberGetBetweenBalanceReply, error)
+	ListMemberGetBetweenTime(context.Context, *ListMemberGetBetweenTimeReq) (*ListMemberGetBetweenTimeReply, error)
 	//==================================================
 	RoleAdd(context.Context, *RoleAddReq) (*RoleAddReply, error)
 	RoleRemove(context.Context, *RoleRemoveReq) (*RoleRemoveReply, error)
 	RoleChange(context.Context, *RoleChangeReq) (*RoleChangeReply, error)
 	RoleGet(context.Context, *RoleGetReq) (*RoleGetReply, error)
+	RoleGetAll(context.Context, *RoleGetAllReq) (*RoleGetAllReply, error)
 	//================================================================
 	PermissionAdd(context.Context, *PermissionAddReq) (*PermissionAddReply, error)
 	PermissionRemove(context.Context, *PermissionRemoveReq) (*PermissionRemoveReply, error)
 	PermissionChange(context.Context, *PermissionChangeReq) (*PermissionChangeReply, error)
 	PermissionGet(context.Context, *PermissionGetReq) (*PermissionGetReply, error)
+	PermissionGetAll(context.Context, *PermissionGetAllReq) (*PermissionGetAllReply, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -246,8 +334,26 @@ func (UnimplementedUserServer) MemberChange(context.Context, *MemberChangeReq) (
 func (UnimplementedUserServer) MemberGet(context.Context, *MemberGetReq) (*MemberGetReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MemberGet not implemented")
 }
-func (UnimplementedUserServer) MemberGetBetweenTime(context.Context, *MemberGetBetweenTimeReq) (*MemberGetBetweenTimeReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MemberGetBetweenTime not implemented")
+func (UnimplementedUserServer) ListMemberGetById(context.Context, *ListMemberGetByIdReq) (*ListMemberGetByIdReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMemberGetById not implemented")
+}
+func (UnimplementedUserServer) ListMemberGetByName(context.Context, *ListMemberGetByNameReq) (*ListMemberGetByNameReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMemberGetByName not implemented")
+}
+func (UnimplementedUserServer) ListMemberGetByPhone(context.Context, *ListMemberGetByPhoneReq) (*ListMemberGetByPhoneReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMemberGetByPhone not implemented")
+}
+func (UnimplementedUserServer) ListMemberGetByEmail(context.Context, *ListMemberGetByEmailReq) (*ListMemberGetByEmailReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMemberGetByEmail not implemented")
+}
+func (UnimplementedUserServer) ListMemberGetBetweenRecharge(context.Context, *ListMemberGetBetweenRechargeReq) (*ListMemberGetBetweenRechargeReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMemberGetBetweenRecharge not implemented")
+}
+func (UnimplementedUserServer) ListMemberGetBetweenBalance(context.Context, *ListMemberGetBetweenBalanceReq) (*ListMemberGetBetweenBalanceReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMemberGetBetweenBalance not implemented")
+}
+func (UnimplementedUserServer) ListMemberGetBetweenTime(context.Context, *ListMemberGetBetweenTimeReq) (*ListMemberGetBetweenTimeReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMemberGetBetweenTime not implemented")
 }
 func (UnimplementedUserServer) RoleAdd(context.Context, *RoleAddReq) (*RoleAddReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoleAdd not implemented")
@@ -261,6 +367,9 @@ func (UnimplementedUserServer) RoleChange(context.Context, *RoleChangeReq) (*Rol
 func (UnimplementedUserServer) RoleGet(context.Context, *RoleGetReq) (*RoleGetReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoleGet not implemented")
 }
+func (UnimplementedUserServer) RoleGetAll(context.Context, *RoleGetAllReq) (*RoleGetAllReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoleGetAll not implemented")
+}
 func (UnimplementedUserServer) PermissionAdd(context.Context, *PermissionAddReq) (*PermissionAddReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PermissionAdd not implemented")
 }
@@ -272,6 +381,9 @@ func (UnimplementedUserServer) PermissionChange(context.Context, *PermissionChan
 }
 func (UnimplementedUserServer) PermissionGet(context.Context, *PermissionGetReq) (*PermissionGetReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PermissionGet not implemented")
+}
+func (UnimplementedUserServer) PermissionGetAll(context.Context, *PermissionGetAllReq) (*PermissionGetAllReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PermissionGetAll not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -412,20 +524,128 @@ func _User_MemberGet_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_MemberGetBetweenTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MemberGetBetweenTimeReq)
+func _User_ListMemberGetById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMemberGetByIdReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).MemberGetBetweenTime(ctx, in)
+		return srv.(UserServer).ListMemberGetById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.v1.User/MemberGetBetweenTime",
+		FullMethod: "/user.v1.User/ListMemberGetById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).MemberGetBetweenTime(ctx, req.(*MemberGetBetweenTimeReq))
+		return srv.(UserServer).ListMemberGetById(ctx, req.(*ListMemberGetByIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_ListMemberGetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMemberGetByNameReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListMemberGetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/ListMemberGetByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListMemberGetByName(ctx, req.(*ListMemberGetByNameReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_ListMemberGetByPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMemberGetByPhoneReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListMemberGetByPhone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/ListMemberGetByPhone",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListMemberGetByPhone(ctx, req.(*ListMemberGetByPhoneReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_ListMemberGetByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMemberGetByEmailReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListMemberGetByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/ListMemberGetByEmail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListMemberGetByEmail(ctx, req.(*ListMemberGetByEmailReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_ListMemberGetBetweenRecharge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMemberGetBetweenRechargeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListMemberGetBetweenRecharge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/ListMemberGetBetweenRecharge",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListMemberGetBetweenRecharge(ctx, req.(*ListMemberGetBetweenRechargeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_ListMemberGetBetweenBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMemberGetBetweenBalanceReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListMemberGetBetweenBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/ListMemberGetBetweenBalance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListMemberGetBetweenBalance(ctx, req.(*ListMemberGetBetweenBalanceReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_ListMemberGetBetweenTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMemberGetBetweenTimeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListMemberGetBetweenTime(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/ListMemberGetBetweenTime",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListMemberGetBetweenTime(ctx, req.(*ListMemberGetBetweenTimeReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -502,6 +722,24 @@ func _User_RoleGet_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_RoleGetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoleGetAllReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).RoleGetAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/RoleGetAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).RoleGetAll(ctx, req.(*RoleGetAllReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_PermissionAdd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PermissionAddReq)
 	if err := dec(in); err != nil {
@@ -574,6 +812,24 @@ func _User_PermissionGet_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_PermissionGetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PermissionGetAllReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).PermissionGetAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/PermissionGetAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).PermissionGetAll(ctx, req.(*PermissionGetAllReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -610,8 +866,32 @@ var User_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _User_MemberGet_Handler,
 		},
 		{
-			MethodName: "MemberGetBetweenTime",
-			Handler:    _User_MemberGetBetweenTime_Handler,
+			MethodName: "ListMemberGetById",
+			Handler:    _User_ListMemberGetById_Handler,
+		},
+		{
+			MethodName: "ListMemberGetByName",
+			Handler:    _User_ListMemberGetByName_Handler,
+		},
+		{
+			MethodName: "ListMemberGetByPhone",
+			Handler:    _User_ListMemberGetByPhone_Handler,
+		},
+		{
+			MethodName: "ListMemberGetByEmail",
+			Handler:    _User_ListMemberGetByEmail_Handler,
+		},
+		{
+			MethodName: "ListMemberGetBetweenRecharge",
+			Handler:    _User_ListMemberGetBetweenRecharge_Handler,
+		},
+		{
+			MethodName: "ListMemberGetBetweenBalance",
+			Handler:    _User_ListMemberGetBetweenBalance_Handler,
+		},
+		{
+			MethodName: "ListMemberGetBetweenTime",
+			Handler:    _User_ListMemberGetBetweenTime_Handler,
 		},
 		{
 			MethodName: "RoleAdd",
@@ -630,6 +910,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _User_RoleGet_Handler,
 		},
 		{
+			MethodName: "RoleGetAll",
+			Handler:    _User_RoleGetAll_Handler,
+		},
+		{
 			MethodName: "PermissionAdd",
 			Handler:    _User_PermissionAdd_Handler,
 		},
@@ -644,6 +928,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PermissionGet",
 			Handler:    _User_PermissionGet_Handler,
+		},
+		{
+			MethodName: "PermissionGetAll",
+			Handler:    _User_PermissionGetAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

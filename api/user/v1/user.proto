@@ -50,13 +50,49 @@ service User{
 
     rpc MemberGet (MemberGetReq) returns (MemberGetReply) {
         option (google.api.http) = {
-            get: "/v1/member/get"
+            get: "/v1/member/get/{id}"
         };
     }
 
-    rpc MemberGetBetweenTime (MemberGetBetweenTimeReq) returns (MemberGetBetweenTimeReply) {
+    rpc ListMemberGetById (ListMemberGetByIdReq) returns (ListMemberGetByIdReply) {
         option (google.api.http) = {
-            get: "/v1/member/get/time/{start}/{end}"
+            get: "/v1/member/list/get/{id}"
+        };
+    }
+
+    rpc ListMemberGetByName (ListMemberGetByNameReq) returns (ListMemberGetByNameReply) {
+        option (google.api.http) = {
+            get: "/v1/member/list/get/name/{name}"
+        };
+    }
+
+    rpc ListMemberGetByPhone (ListMemberGetByPhoneReq) returns (ListMemberGetByPhoneReply) {
+        option (google.api.http) = {
+            get: "/v1/member/list/get/phone/{phone}"
+        };
+    }
+
+    rpc ListMemberGetByEmail (ListMemberGetByEmailReq) returns (ListMemberGetByEmailReply) {
+        option (google.api.http) = {
+            get: "/v1/member/list/get/email/{email}"
+        };
+    }
+
+    rpc ListMemberGetBetweenRecharge (ListMemberGetBetweenRechargeReq) returns (ListMemberGetBetweenRechargeReply) {
+        option (google.api.http) = {
+            get: "/v1/member/list/get/recharge/{low}/{high}"
+        };
+    }
+
+    rpc ListMemberGetBetweenBalance (ListMemberGetBetweenBalanceReq) returns (ListMemberGetBetweenBalanceReply) {
+        option (google.api.http) = {
+            get: "/v1/member/list/get/balance/{low}/{high}"
+        };
+    }
+
+    rpc ListMemberGetBetweenTime (ListMemberGetBetweenTimeReq) returns (ListMemberGetBetweenTimeReply) {
+        option (google.api.http) = {
+            get: "/v1/member/list/get/time/{start}/{end}"
         };
     }
 
@@ -83,7 +119,13 @@ service User{
 
     rpc RoleGet (RoleGetReq) returns (RoleGetReply) {
         option (google.api.http) = {
-            get: "/v1/role/get"
+            get: "/v1/role/get/{id}"
+        };
+    }
+
+    rpc RoleGetAll (RoleGetAllReq) returns (RoleGetAllReply) {
+        option (google.api.http) = {
+            get: "/v1/role/get/all"
         };
     }
 
@@ -110,9 +152,15 @@ service User{
 
     rpc PermissionGet (PermissionGetReq) returns (PermissionGetReply) {
         option (google.api.http) = {
-            get: "/v1/permission/get"
+            get: "/v1/permission/get/{id}"
         };
-    }        
+    }
+    
+    rpc PermissionGetAll (PermissionGetAllReq) returns (PermissionGetAllReply) {
+        option (google.api.http) = {
+            get: "/v1/permission/get/all"
+        };
+    }
 }
 
 //用户基础业务逻辑
@@ -153,8 +201,8 @@ message MemberEntity {
     string password = 3;
     string email = 4;
     string avator = 5;
-    float recharge = 6;
-    float balance = 7;
+    double recharge = 6;
+    double balance = 7;
     int64 rid =  8;
 }
 
@@ -165,8 +213,8 @@ message MemberDTO {
     string password = 4;
     string email = 5;
     string avator = 6;
-    float recharge = 7;
-    float balance = 8;
+    double recharge = 7;
+    double balance = 8;
     string role = 9;
     repeated string permissions = 10;
     string created_at = 11;
@@ -191,7 +239,7 @@ message MemberAddReq {
 }
 
 message MemberAddReply {
-    int64 id = 1;
+    bool ok = 1;
 }
 
 message MemberRemoveReq {
@@ -211,22 +259,82 @@ message MemberChangeReply {
 }
 
 message MemberGetReq {
-    MemberDTO member = 1;
+    string id = 1;
+}
+
+message MemberGetReply {
+    MemberDTO members = 1;
+}
+
+message ListMemberGetByIdReq {
+    int64 id = 1;
     PageInfoReq page = 2;
 }
 
-message MemberGetReply{
+message ListMemberGetByIdReply{
     repeated MemberDTO members = 1;
     PageInfoReply page = 2;
 }
 
-message MemberGetBetweenTimeReq {
+message ListMemberGetByNameReq {
+    string name = 1;
+    PageInfoReq page = 2;
+}
+
+message ListMemberGetByNameReply {
+    repeated MemberDTO members = 1;
+    PageInfoReply page = 2;
+}
+
+message ListMemberGetByPhoneReq {
+    string phone = 1;
+    PageInfoReq page = 2;
+}
+
+message ListMemberGetByPhoneReply {
+    repeated MemberDTO members = 1;
+    PageInfoReply page = 2;
+}
+
+message ListMemberGetByEmailReq {
+    string email = 1;
+    PageInfoReq page = 2;
+}
+
+message ListMemberGetByEmailReply {
+    repeated MemberDTO members = 1;
+    PageInfoReply page = 2;
+}
+
+message ListMemberGetBetweenRechargeReq {
+    double low = 1;
+    double high = 2;
+    PageInfoReq page = 3;
+}
+
+message ListMemberGetBetweenRechargeReply {
+    repeated MemberDTO members = 1;
+    PageInfoReply page = 2;
+}
+
+message ListMemberGetBetweenBalanceReq {
+    double low = 1;
+    double high = 2;
+    PageInfoReq page = 3;
+}
+
+message ListMemberGetBetweenBalanceReply {
+    repeated MemberDTO members = 1;
+    PageInfoReply page = 2;
+}
+
+message ListMemberGetBetweenTimeReq {
     string start = 1;
     string end = 2;
     PageInfoReq  page = 3;
 }
 
-message MemberGetBetweenTimeReply {
+message ListMemberGetBetweenTimeReply {
     repeated MemberDTO members = 1;
     PageInfoReply page = 2;
 }
@@ -263,7 +371,7 @@ message RoleChangeReply {
 }
 
 message RoleGetReq {
-    RoleDTO role = 1;
+    int64 id = 1;
     PageInfoReq page = 2;
 }
 
@@ -272,6 +380,14 @@ message RoleGetReply {
     PageInfoReply page = 2;
 }
 
+message RoleGetAllReq {
+    PageInfoReq page = 1;
+}
+
+message RoleGetAllReply {
+    repeated RoleDTO roles = 1;
+    PageInfoReply page = 2;
+}
 
 //权限表增删改查
 message PermissionDTO {
@@ -311,9 +427,20 @@ message PermissionChangeReply {
 }
 
 message PermissionGetReq {
-    PermissionEntity permission = 1;
+    int64 id = 1;
+    PageInfoReq page = 2;
 }
 
 message PermissionGetReply {
     repeated PermissionDTO permission = 1;
+    PageInfoReply page = 2;
+}
+
+message PermissionGetAllReq {
+    PageInfoReq page = 1;
+}
+
+message PermissionGetAllReply {
+    repeated PermissionDTO permission = 1;
+    PageInfoReply page = 2;
 }
