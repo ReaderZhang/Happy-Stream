@@ -1,0 +1,1 @@
+docker run --restart=always -d --name mysql -v $PWD/my.cnf:/etc/mysql/my.cnf -v ~/docker/mysql/data:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:8.0.23
