@@ -35,8 +35,26 @@ func (s *UserService) MemberChange(ctx context.Context, req *pb.MemberChangeReq)
 func (s *UserService) MemberGet(ctx context.Context, req *pb.MemberGetReq) (*pb.MemberGetReply, error) {
 	return &pb.MemberGetReply{}, nil
 }
-func (s *UserService) MemberGetBetweenTime(ctx context.Context, req *pb.MemberGetBetweenTimeReq) (*pb.MemberGetBetweenTimeReply, error) {
-	return &pb.MemberGetBetweenTimeReply{}, nil
+func (s *UserService) ListMemberGetById(ctx context.Context, req *pb.ListMemberGetByIdReq) (*pb.ListMemberGetByIdReply, error) {
+	return &pb.ListMemberGetByIdReply{}, nil
+}
+func (s *UserService) ListMemberGetByName(ctx context.Context, req *pb.ListMemberGetByNameReq) (*pb.ListMemberGetByNameReply, error) {
+	return &pb.ListMemberGetByNameReply{}, nil
+}
+func (s *UserService) ListMemberGetByPhone(ctx context.Context, req *pb.ListMemberGetByPhoneReq) (*pb.ListMemberGetByPhoneReply, error) {
+	return &pb.ListMemberGetByPhoneReply{}, nil
+}
+func (s *UserService) ListMemberGetByEmail(ctx context.Context, req *pb.ListMemberGetByEmailReq) (*pb.ListMemberGetByEmailReply, error) {
+	return &pb.ListMemberGetByEmailReply{}, nil
+}
+func (s *UserService) ListMemberGetBetweenRecharge(ctx context.Context, req *pb.ListMemberGetBetweenRechargeReq) (*pb.ListMemberGetBetweenRechargeReply, error) {
+	return &pb.ListMemberGetBetweenRechargeReply{}, nil
+}
+func (s *UserService) ListMemberGetBetweenBalance(ctx context.Context, req *pb.ListMemberGetBetweenBalanceReq) (*pb.ListMemberGetBetweenBalanceReply, error) {
+	return &pb.ListMemberGetBetweenBalanceReply{}, nil
+}
+func (s *UserService) ListMemberGetBetweenTime(ctx context.Context, req *pb.ListMemberGetBetweenTimeReq) (*pb.ListMemberGetBetweenTimeReply, error) {
+	return &pb.ListMemberGetBetweenTimeReply{}, nil
 }
 func (s *UserService) RoleAdd(ctx context.Context, req *pb.RoleAddReq) (*pb.RoleAddReply, error) {
 	return &pb.RoleAddReply{}, nil
@@ -50,6 +68,9 @@ func (s *UserService) RoleChange(ctx context.Context, req *pb.RoleChangeReq) (*p
 func (s *UserService) RoleGet(ctx context.Context, req *pb.RoleGetReq) (*pb.RoleGetReply, error) {
 	return &pb.RoleGetReply{}, nil
 }
+func (s *UserService) RoleGetAll(ctx context.Context, req *pb.RoleGetAllReq) (*pb.RoleGetAllReply, error) {
+	return &pb.RoleGetAllReply{}, nil
+}
 func (s *UserService) PermissionAdd(ctx context.Context, req *pb.PermissionAddReq) (*pb.PermissionAddReply, error) {
 	return &pb.PermissionAddReply{}, nil
 }
@@ -61,4 +82,7 @@ func (s *UserService) PermissionChange(ctx context.Context, req *pb.PermissionCh
 }
 func (s *UserService) PermissionGet(ctx context.Context, req *pb.PermissionGetReq) (*pb.PermissionGetReply, error) {
 	return &pb.PermissionGetReply{}, nil
+}
+func (s *UserService) PermissionGetAll(ctx context.Context, req *pb.PermissionGetAllReq) (*pb.PermissionGetAllReply, error) {
+	return &pb.PermissionGetAllReply{}, nil
 }
