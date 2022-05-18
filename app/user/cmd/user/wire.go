@@ -1,3 +1,4 @@
+//go:build wireinject
 // +build wireinject
 
 // The build tag makes sure the stub is not built in the final build.
@@ -5,14 +6,14 @@
 package main
 
 import (
-	"user/internal/biz"
-	"user/internal/conf"
-	"user/internal/data"
-	"user/internal/server"
-	"user/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	"github.com/qqz/Happy-Stream/app/user/internal/biz"
+	"github.com/qqz/Happy-Stream/app/user/internal/conf"
+	"github.com/qqz/Happy-Stream/app/user/internal/data"
+	"github.com/qqz/Happy-Stream/app/user/internal/server"
+	"github.com/qqz/Happy-Stream/app/user/internal/service"
 )
 
 // initApp init kratos application.

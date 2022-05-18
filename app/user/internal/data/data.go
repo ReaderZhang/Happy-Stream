@@ -16,7 +16,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewDB, NewRedis)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewRedis, NewAuthRepo, NewMemberRepo, NewPermissionRepo, NewRoleRepo)
 
 // Data .
 type Data struct {
@@ -60,6 +60,7 @@ func NewRedis(c *conf.Data) *redis.Client {
 		Addr:         c.Redis.Addr,
 		WriteTimeout: c.Redis.WriteTimeout.AsDuration(),
 		ReadTimeout:  c.Redis.ReadTimeout.AsDuration(),
+		Password:     "123456",
 	})
 	rdb.AddHook(redisotel.TracingHook{})
 	if err := rdb.Close(); err != nil {

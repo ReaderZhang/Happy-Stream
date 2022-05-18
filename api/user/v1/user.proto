@@ -4,7 +4,7 @@ package user.v1;
 
 import "google/api/annotations.proto";
 
-option go_package = "github.com/qqz/Happy-Stream/api/user/v1;v1";
+option go_package = "github.com/qqz/Happy-Stream/api/order/v1;v1";
 
 service User{
     rpc Login (LoginReq) returns (LoginReply) {
@@ -92,7 +92,14 @@ service User{
 
     rpc ListMemberGetBetweenTime (ListMemberGetBetweenTimeReq) returns (ListMemberGetBetweenTimeReply) {
         option (google.api.http) = {
-            get: "/v1/member/list/get/time/{start}/{end}"
+            get: "/v1/member/list/get/time/{start}/{end}/{page_num}/{page_size}"
+        };
+    }
+
+    rpc ListMembers(MemberForm) returns(MemberTableReply){
+        option (google.api.http) = {
+            post:"/v1/member/list"
+            body:"*"
         };
     }
 
@@ -222,6 +229,37 @@ message MemberDTO {
     string deleted_at = 13;
 }
 
+message MemberForm{
+    string search = 1;
+    string type = 2;
+    string start = 3;
+    string end = 4;
+    string status = 5;
+    double blow = 6;
+    double bhight = 7;
+    double rlow = 8;
+    double rhigh = 9;
+    int64 page_size = 10;
+    int64 page_num = 11;
+}
+
+message MemberTable{
+    int64 id = 1;
+    string username = 2;
+    string email = 3;
+    string phone = 4;
+    double balance = 5;
+    double recharge = 6;
+    string created_at = 7;
+    int32 status = 8;
+}
+
+message MemberTableReply{
+    repeated MemberTable table = 1;
+    PageInfoReply page = 2;
+}
+
+
 message PageInfoReq {
     int64 page_num = 1;
     int64 page_size = 2;
@@ -331,7 +369,8 @@ message ListMemberGetBetweenBalanceReply {
 message ListMemberGetBetweenTimeReq {
     string start = 1;
     string end = 2;
-    PageInfoReq  page = 3;
+    int32 page_size = 3;
+    int32 page_num = 4;
 }
 
 message ListMemberGetBetweenTimeReply {

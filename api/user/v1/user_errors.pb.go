@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.27.1
 // 	protoc        v3.6.1
-// source: api/user/v1/user_errors.proto
+// source: api/order/v1/user_errors.proto
 
 package v1
 
@@ -100,7 +100,7 @@ func file_api_user_v1_user_errors_proto_rawDescGZIP() []byte {
 
 var file_api_user_v1_user_errors_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_api_user_v1_user_errors_proto_goTypes = []interface{}{
-	(UserServiceErrorReason)(0), // 0: user.v1.UserServiceErrorReason
+	(UserServiceErrorReason)(0), // 0: order.v1.UserServiceErrorReason
 }
 var file_api_user_v1_user_errors_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

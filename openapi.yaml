@@ -1,30 +1,11 @@
 # Generated with protoc-gen-openapi
-# https://github.com/google/gnostic/tree/master/apps/protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
 
 openapi: 3.0.3
 info:
-    title: ""
+    title: User API
     version: 0.0.1
 paths:
-    /helloworld/{name}:
-        get:
-            tags:
-                - Greeter
-            description: Sends a greeting
-            operationId: Greeter_SayHello
-            parameters:
-                - name: name
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HelloReply'
     /v1/login:
         post:
             tags:
@@ -43,6 +24,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/LoginReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/logout:
         get:
             tags:
@@ -55,6 +42,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/LogoutReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/add:
         post:
             tags:
@@ -74,6 +67,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MemberAddReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/get/{id}:
         get:
             tags:
@@ -92,6 +91,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MemberGetReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/member/list:
+        post:
+            tags:
+                - User
+            operationId: User_ListMembers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MemberForm'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberTableReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/list/get/balance/{low}/{high}:
         get:
             tags:
@@ -127,6 +156,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListMemberGetBetweenBalanceReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/list/get/email/{email}:
         get:
             tags:
@@ -155,6 +190,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListMemberGetByEmailReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/list/get/name/{name}:
         get:
             tags:
@@ -183,6 +224,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListMemberGetByNameReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/list/get/phone/{phone}:
         get:
             tags:
@@ -211,6 +258,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListMemberGetByPhoneReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/list/get/recharge/{low}/{high}:
         get:
             tags:
@@ -246,7 +299,13 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListMemberGetBetweenRechargeReply'
-    /v1/member/list/get/time/{start}/{end}:
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/member/list/get/time/{start}/{end}/{pageNum}/{pageSize}:
         get:
             tags:
                 - User
@@ -262,16 +321,18 @@ paths:
                   required: true
                   schema:
                     type: string
-                - name: page.pageNum
-                  in: query
+                - name: pageNum
+                  in: path
+                  required: true
                   schema:
                     type: integer
-                    format: int64
-                - name: page.pageSize
-                  in: query
+                    format: int32
+                - name: pageSize
+                  in: path
+                  required: true
                   schema:
                     type: integer
-                    format: int64
+                    format: int32
             responses:
                 "200":
                     description: OK
@@ -279,6 +340,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListMemberGetBetweenTimeReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/list/get/{id}:
         get:
             tags:
@@ -308,6 +375,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ListMemberGetByIdReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/remove/{id}:
         delete:
             tags:
@@ -327,6 +400,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MemberRemoveReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/member/update:
         patch:
             tags:
@@ -345,6 +424,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/MemberChangeReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/permission/add:
         post:
             tags:
@@ -364,6 +449,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PermissionAddReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/permission/get/all:
         get:
             tags:
@@ -387,6 +478,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PermissionGetAllReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/permission/get/{id}:
         get:
             tags:
@@ -416,6 +513,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PermissionGetReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/permission/remove/{id}:
         delete:
             tags:
@@ -435,6 +538,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PermissionRemoveReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/permission/update:
         patch:
             tags:
@@ -453,6 +562,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PermissionChangeReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/register:
         post:
             tags:
@@ -471,6 +586,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RegisterReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/role/add:
         post:
             tags:
@@ -490,6 +611,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RoleAddReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/role/get/all:
         get:
             tags:
@@ -513,6 +640,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RoleGetAllReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/role/get/{id}:
         get:
             tags:
@@ -542,6 +675,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RoleGetReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/role/remove/{id}:
         delete:
             tags:
@@ -561,6 +700,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RoleRemoveReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/role/update:
         patch:
             tags:
@@ -579,14 +724,22 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RoleChangeReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
     schemas:
-        HelloReply:
+        GoogleProtobufAny:
             type: object
             properties:
-                message:
+                '@type':
                     type: string
-            description: The response message containing the greetings
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
         ListMemberGetBetweenBalanceReply:
             type: object
             properties:
@@ -749,6 +902,37 @@ components:
                 rid:
                     type: integer
                     format: int64
+        MemberForm:
+            type: object
+            properties:
+                search:
+                    type: string
+                type:
+                    type: string
+                start:
+                    type: string
+                end:
+                    type: string
+                status:
+                    type: string
+                blow:
+                    type: number
+                    format: double
+                bhight:
+                    type: number
+                    format: double
+                rlow:
+                    type: number
+                    format: double
+                rhigh:
+                    type: number
+                    format: double
+                pageSize:
+                    type: integer
+                    format: int64
+                pageNum:
+                    type: integer
+                    format: int64
         MemberGetReply:
             type: object
             properties:
@@ -759,6 +943,38 @@ components:
             properties:
                 ok:
                     type: boolean
+        MemberTable:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                username:
+                    type: string
+                email:
+                    type: string
+                phone:
+                    type: string
+                balance:
+                    type: number
+                    format: double
+                recharge:
+                    type: number
+                    format: double
+                createdAt:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+        MemberTableReply:
+            type: object
+            properties:
+                table:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MemberTable'
+                page:
+                    $ref: '#/components/schemas/PageInfoReply'
         PageInfoReply:
             type: object
             properties:
@@ -910,7 +1126,21 @@ components:
             properties:
                 ok:
                     type: boolean
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
 tags:
-    - name: Greeter
-      description: The greeting service definition.
     - name: User
